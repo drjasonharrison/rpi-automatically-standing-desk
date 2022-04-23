@@ -15,4 +15,5 @@ RUN /usr/local/bin/python3.6 -m pip install --upgrade pip \
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 
-CMD ["runCommand.bash"]
+# CMD ["/usr/src/app/runCommand.bash"]
+CMD ["sleep 10000"]

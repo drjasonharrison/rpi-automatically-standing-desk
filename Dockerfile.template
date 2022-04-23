@@ -16,4 +16,4 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 # CMD ["/usr/src/app/runCommand.bash"]
-CMD ["sleep 10000"]
+CMD ["sleep", "10000"]

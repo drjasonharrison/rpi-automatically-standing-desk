@@ -7,11 +7,13 @@ WORKDIR /usr/src/app
 
 COPY ./requirements.txt ./
 RUN /usr/local/bin/python3.6 -m pip install --upgrade pip \
-    && pip install -r ./requirements.txt
+    && pip freeze \ 
+    && pip install -r ./requirements.txt \
+    && pip freeze
 
 COPY raiseDesk.py ./
 COPY *.bash ./
 RUN ls -l
 
 # CMD ["/usr/src/app/runCommand.bash"]
-CMD ["sleep", "10000"]
+CMD ["tail", "-f", "/dev/null"]

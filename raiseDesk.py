@@ -1,5 +1,5 @@
 from gpiozero import LED # The LED library allows easy pin control
-import RaspberryPiGpio
+import pigpio
 from time import sleep
 import random
 import os

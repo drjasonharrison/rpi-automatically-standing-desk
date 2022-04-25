@@ -9,10 +9,12 @@ export LOG_TO_CONSOLE=true
 source "$DIR/utils.bash"
 
 set -euo pipefail
-pigpiod
+
 export PIGPIO_ADDR=soft
 export PIGPIO_PORT=8888
+pigpiod
 
+python -c "from gpiozero import LED; import pigpio; pigpio.pi(); relay = LED(37)"
 while true; do
     sleep 10
     

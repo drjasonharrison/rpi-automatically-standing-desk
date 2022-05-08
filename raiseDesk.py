@@ -13,8 +13,18 @@ logging.basicConfig(
 class RaiseDesk:
     def __init__(self):
         self.logger = logging.getLogger('RaiseDesk')
-        pigpio.pi('soft', 8888)
-        self.relay = LED(37) 
+
+        Relay_Ch1 = 26
+        Relay_Ch2 = 20
+        Relay_Ch3 = 21
+
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+
+        GPIO.setup(Relay_Ch1,GPIO.OUT)
+        GPIO.setup(Relay_Ch2,GPIO.OUT)
+        GPIO.setup(Relay_Ch3,GPIO.OUT)
+
          # takes a long time for the desk to rise up
         self.pressRaiseDeskButtonSeconds = os.getenv("DESK_PRESS_BUTTON_SECONDS", 8)
         self.minMinutesBeforeRaisingDesk = os.getenv("DESK_MIN_PERIOD_MINUTES", 45)

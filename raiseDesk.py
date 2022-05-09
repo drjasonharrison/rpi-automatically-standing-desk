@@ -37,7 +37,7 @@ class RaiseDesk:
         GPIO.output(self.Relay_Ch1, GPIO.LOW)
 
     def releaseButton(self):
-        GPIO.output(self.Relay_Ch1, GPIO.LOW)
+        GPIO.output(self.Relay_Ch1, GPIO.HIGH)
 
     def raiseDeskAndSleepForever(self):
         while True:

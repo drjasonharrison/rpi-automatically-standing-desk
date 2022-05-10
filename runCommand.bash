@@ -8,16 +8,8 @@ export LOG_TO_CONSOLE=true
 # shellcheck disable=SC1090
 source "$DIR/utils.bash"
 
+printenv | sort
+
 set -euo pipefail
-
-export PIGPIO_ADDR=soft
-export PIGPIO_PORT=8888
-pigpiod
-
-python -c "from gpiozero import LED; import pigpio; pigpio.pi(); relay = LED(37)"
-while true; do
-    sleep 10
-    
-exit 0
 
 python raiseDesk.py

@@ -58,7 +58,7 @@ class RaiseDesk:
 
 
     def main(self):
-        self.toggleButtonTest()
+        # self.toggleButtonTest()
 
         self.raiseDeskAndSleepForever()
 

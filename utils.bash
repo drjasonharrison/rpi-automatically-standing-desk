@@ -255,37 +255,6 @@ function idleIfDebugSet() {
     fi
 }
 
-# TODO: may not work
-function restartContainer() {
-    echolog "Attempting to restart the container"
-    if [ -z ${RESIN_SUPERVISOR_ADDRESS+x} ]; then
-        errorExitWithDelay "Error: RESIN_SUPERVISOR_ADDRESS is not set"
-    else
-        echolog "Error: restarting the container"
-        curl --connect-timeout 2 --max-time 2 \
-            -X POST --header "Content-Type:application/json" \
-            --data "{\"appId\": $RESIN_APP_ID}" \
-            "$RESIN_SUPERVISOR_ADDRESS/v1/restart?apikey=$RESIN_SUPERVISOR_API_KEY"
-            curl --silent --fail --show-error "$SERVER_URL/under_construction/false" > /dev/null
-        exitStatus=$?
-        echolog "curl --silent --fail ${SERVER_URL} exited with value ${exitStatus}"
-        if [[ exitStatus -ne 0 ]]; then
-            echolog "Error: unable to reach SUPERVISOR, curl error $exitStatus"
-            # 6 == Could not resolve host.
-            #      The given remote host's address was not resolved.
-            #      The address of the given server could not be resolved.
-            #      Either the given host name is just wrong, or the DNS server is misbehaving
-            #      and does not know about this name when it should or perhaps even the system
-            #      you run curl on is misconfigured so that it does not find/use the correct DNS server.
-            # 22 == HTTP page not retrieved.
-            #       The requested url was not found or returned another error with the HTTP
-            #       error code being 400 or above.
-            # 28 == timeout
-        fi
-    fi
-    errorExitWithDelay "Error: restarting the container failed."
-}
-
 # useful for transfering files off of devices:
 function transfer() {
     if [ $# -eq 0 ]; then

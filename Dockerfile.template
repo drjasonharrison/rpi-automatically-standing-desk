@@ -1,6 +1,6 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-latest-build
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-run
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -14,24 +14,5 @@ RUN pip install -r requirements.txt
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
 
-# CMD ["python", "gpio_example.py"]
-CMD ["tail", "-f", "/dev/null"]
-# FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
-
-# RUN apt update \
-#     && apt install pigpio python3-gpiozero python-pigpio python3-pigpio
-
-# WORKDIR /usr/src/app
-
-# COPY ./requirements.txt ./
-# RUN /usr/local/bin/python3.6 -m pip install --upgrade pip \
-#     && pip freeze \ 
-#     && pip install -r ./requirements.txt \
-#     && pip freeze
-
-# COPY raiseDesk.py ./
-# COPY *.bash ./
-# RUN ls -l
-
-# # CMD ["/usr/src/app/runCommand.bash"]
+CMD ["/usr/src/app/runCommand.bash"]
 # CMD ["tail", "-f", "/dev/null"]

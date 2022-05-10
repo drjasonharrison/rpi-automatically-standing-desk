@@ -1,6 +1,7 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-run
+# FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-build
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -8,10 +9,10 @@ WORKDIR /usr/src/app
 # Copy requirements.txt first for better cache on later pushes
 COPY requirements.txt requirements.txt
 
-# pip install python deps from requirements.txt on the resin.io build server
+# pip install python deps from requirements.txt on the balena.io build server
 RUN pip install -r requirements.txt
 
-# This will copy all files in our root to the working  directory in the container
+# This will copy all files in our root to the working directory in the container
 COPY . ./
 
 CMD ["/usr/src/app/runCommand.bash"]

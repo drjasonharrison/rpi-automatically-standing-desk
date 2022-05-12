@@ -40,8 +40,9 @@ class RaiseDesk:
         log.info("chattering relay")
         for _ in itertools.repeat(None, 100):
             GPIO.output(self.Relay_Ch2, GPIO.LOW)
-            sleep(1)
+            sleep(2)
             GPIO.output(self.Relay_Ch2, GPIO.HIGH)
+            sleep(2)
 
     def pressButton(self):
         GPIO.output(self.Relay_Ch1, GPIO.LOW)

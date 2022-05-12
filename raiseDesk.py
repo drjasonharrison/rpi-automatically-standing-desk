@@ -7,6 +7,7 @@ from time import sleep
 import random
 import os
 import logging
+import itertools
 
 logging.basicConfig(
     level=logging.INFO,
@@ -34,6 +35,13 @@ class RaiseDesk:
         self.maxTimeBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
         log.info("initialized")
 
+    def chatterRelay(self):
+        log.info("chattering relay")
+        for _ in itertools.repeat(None, 100):
+            GPIO.output(self.Relay_Ch2, GPIO.LOW)
+            sleep(1)
+            GPIO.output(self.Relay_Ch2, GPIO.HIGH)
+
     def pressButton(self):
         GPIO.output(self.Relay_Ch1, GPIO.LOW)
 
@@ -42,11 +50,13 @@ class RaiseDesk:
 
     def raiseDeskAndSleepForever(self):
         while True:
-            log.info("raising desk")
+            log.info("desk raising")
+            self.chatterRelay()
             ## if during "work hours" on a "work day"
             self.pressButton()
             sleep(self.pressRaiseDeskButtonSeconds)
             self.releaseButton()
+            log.info("desk raised")
             sleep(60 * random.randint(self.minMinutesBeforeRaisingDesk, self.maxTimeBeforeRaisingDesk) * self.maxTimeBeforeRaisingDesk)
 
     def toggleButtonTest(self):

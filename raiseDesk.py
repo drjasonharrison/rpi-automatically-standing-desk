@@ -32,6 +32,7 @@ class RaiseDesk:
         self.pressRaiseDeskButtonSeconds = int(os.getenv("DESK_PRESS_BUTTON_SECONDS", 10))
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
         self.maxTimeBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
+        log.info("initialized")
 
     def pressButton(self):
         GPIO.output(self.Relay_Ch1, GPIO.LOW)
@@ -41,6 +42,7 @@ class RaiseDesk:
 
     def raiseDeskAndSleepForever(self):
         while True:
+            log.info("raising desk")
             ## if during "work hours" on a "work day"
             self.pressButton()
             sleep(self.pressRaiseDeskButtonSeconds)
@@ -48,6 +50,7 @@ class RaiseDesk:
             sleep(60 * random.randint(self.minMinutesBeforeRaisingDesk, self.maxTimeBeforeRaisingDesk) * self.maxTimeBeforeRaisingDesk)
 
     def toggleButtonTest(self):
+        log.info("toggleButtonTest")
         while True:
             print("on")
             self.pressButton()

@@ -29,9 +29,9 @@ class RaiseDesk:
         GPIO.setup(self.Relay_Ch3, GPIO.OUT)
 
          # takes a long time for the desk to rise up
-        self.pressRaiseDeskButtonSeconds = os.getenv("DESK_PRESS_BUTTON_SECONDS", 8)
-        self.minMinutesBeforeRaisingDesk = os.getenv("DESK_MIN_PERIOD_MINUTES", 45)
-        self.maxTimeBeforeRaisingDesk = os.getenv("DESK_MAX_PERIOD_MINUTES", 60)
+        self.pressRaiseDeskButtonSeconds = int(os.getenv("DESK_PRESS_BUTTON_SECONDS", 10))
+        self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
+        self.maxTimeBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
 
     def pressButton(self):
         GPIO.output(self.Relay_Ch1, GPIO.LOW)

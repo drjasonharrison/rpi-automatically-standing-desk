@@ -54,8 +54,9 @@ class RaiseDesk:
 
     def raiseDeskAndSleepForever(self):
         while True:
-            log.info("desk raising")
             self.chatterRelay()
+            log.info("desk raising")
+
             ## if during "work hours" on a "work day"
             self.pressButton()
             sleep(self.pressRaiseDeskButtonSeconds)

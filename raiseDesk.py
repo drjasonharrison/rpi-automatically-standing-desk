@@ -34,15 +34,17 @@ class RaiseDesk:
         self.pressRaiseDeskButtonSeconds = int(os.getenv("DESK_PRESS_BUTTON_SECONDS", 10))
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
         self.maxTimeBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
+        self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
+    
         log.info("initialized")
 
     def chatterRelay(self):
         log.info("chattering relay")
-        for _ in itertools.repeat(None, 100):
+        for _ in itertools.repeat(None, self.raiseWarningChatterCycles):
             GPIO.output(self.Relay_Ch2, GPIO.LOW)
-            sleep(2)
+            sleep(1)
             GPIO.output(self.Relay_Ch2, GPIO.HIGH)
-            sleep(2)
+            sleep(1)
 
     def pressButton(self):
         GPIO.output(self.Relay_Ch1, GPIO.LOW)

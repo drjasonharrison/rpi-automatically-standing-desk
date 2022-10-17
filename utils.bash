@@ -40,7 +40,6 @@ function initLogging() {
     if [ -z ${LOG_PATH+x} ]; then
         echolog "LOG_PATH is not defined, searching for persistent volume"
         if [ -d /data ]; then
-            # old location for Donia and Gracemar
             echolog "found /data"
             export LOG_PATH="/data/log/${SERVICE_NAME}.log"
         else
@@ -73,7 +72,7 @@ function initLogging() {
         fi
     fi
 
-    # get the "/eio-data/log/camera" part of /eio-data/log/camera.log
+    # get the "/data/log/camera" part of /eio-data/log/camera.log
     export LOG_FOLDER_AND_LOG_FILE_PREFIX="${LOG_PATH%.*}"
 
     # now create "/eio-data/log/camera-runCommand.log"
@@ -276,9 +275,19 @@ function transfer() {
 debuglog "calling util.initLogging"
 initLogging
 debuglog "util.initLogging is done"
+
+debuglog "calling util.initVariables"
 initVariables
-debuglog "get commit hash"
-getCommitHash
 debuglog "util.initVariables is done"
+
+debuglog "printing environment variables"
+printenv | sort
+debuglog "printed environment variables"
+
+debuglog "calling util.getCommitHash"
+getCommitHash
+debuglog "util.getCommitHash is done"
+
+debuglog "calling util.logContainerStartup"
 logContainerStartup
 debuglog "util.bash is done "

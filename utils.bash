@@ -280,8 +280,8 @@ debuglog "calling util.initVariables"
 initVariables
 debuglog "util.initVariables is done"
 
-debuglog "printing environment variables"
-printenv | sort
+debuglog "printing environment variables (excluding RESIN_*)"
+printenv | grep -v "^RESIN_" | sort
 debuglog "printed environment variables"
 
 debuglog "calling util.getCommitHash"

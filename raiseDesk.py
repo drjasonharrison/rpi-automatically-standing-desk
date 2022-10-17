@@ -34,11 +34,10 @@ class RaiseDesk:
         GPIO.output(self.Relay_Ch2, GPIO.HIGH)
         GPIO.output(self.Relay_Ch3, GPIO.HIGH)
 
-
-         # takes a long time for the desk to rise up
+        # takes a long time for the desk to rise up
         self.pressRaiseDeskButtonSeconds = int(os.getenv("DESK_PRESS_BUTTON_SECONDS", 10))
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
-        self.maxTimeBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
+        self.maxMinutesBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
         self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
     
         log.info("initialized")
@@ -59,15 +58,18 @@ class RaiseDesk:
 
     def raiseDeskAndSleepForever(self):
         while True:
+            ## if during "work hours" on a "work day"
             self.chatterRelay()
             log.info("desk raising")
-
-            ## if during "work hours" on a "work day"
+            
             self.pressButton()
             sleep(self.pressRaiseDeskButtonSeconds)
             self.releaseButton()
             log.info("desk raised")
-            sleep(60 * random.randint(self.minMinutesBeforeRaisingDesk, self.maxTimeBeforeRaisingDesk) * self.maxTimeBeforeRaisingDesk)
+
+            sleep_minutes = random.randint(self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk) 
+            log.info("sleeping for %d minutes", sleep_minutes)
+            sleep(sleep_minutes * 60)
 
     def toggleButtonTest(self):
         log.info("toggleButtonTest")

@@ -32,7 +32,12 @@ function initLogging() {
 
     if [ -z ${SERVICE_NAME+x} ]; then
         echolog "Util::initLogging: SERVICE_NAME is not defined"
-        export SERVICE_NAME=unknown
+        if [ -z ${BALENA_SERVICE_NAME+x} ]; then
+            echolog "Util::initLogging: BALENA_SERVICE_NAME is not defined"
+            export SERVICE_NAME=unknown
+        else
+            export SERVICE_NAME="${BALENA_SERVICE_NAME}"
+        fi
     else
         echolog "Util::initLogging: SERVICE_NAME = ${SERVICE_NAME}"
     fi
@@ -153,14 +158,20 @@ function getCommitHash() {
         # 22 == unauthorized (401)
         # 28 == Operation timed out after connect or max time -- docker or barnserv locked up
     else
+        if ! [ -x "$(command -v jq)" ]; then
+            echo 'Error: jq is not installed.' >&2
+            return
+        else
+            echo -e "jq: \n$(jq --version)\n"
+        fi
         set +e
         COMMIT_HASH=$(echo "${curlResult}" | jq '.[].commit')
         exitStatus=$?
         set -e
         if [[ exitStatus -ne 0 ]]; then
-            echolog "Error: unable to parse Balena supervisor response:  ${curlResult}"
+            echolog "Error: unable to parse Balena supervisor response: ${curlResult}"
         else
-            debuglog "Commit hash = $COMMIT_HASH"
+            echolog "Commit hash = $COMMIT_HASH"
         fi
     fi
 }

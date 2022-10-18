@@ -3,6 +3,12 @@
 # FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-run
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-build
 
+RUN rm /etc/apt/sources.list.d/cuda.list \
+    && apt-get update \
+    && apt-get install --no-install-recommends --yes \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set our working directory
 WORKDIR /usr/src/app
 

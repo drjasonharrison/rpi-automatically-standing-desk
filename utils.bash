@@ -88,7 +88,7 @@ function initLogging() {
     # Might need to catch that and add SERVICE_NAME. Perhaps check when the check
     # for an undefined LOG_PATH is performed, check for directory or something missing
     # the ".log" suffix and then reset LOG_PATH
-    export LOG_FOLDER_AND_LOG_FILE_PREFIX="${LOG_PATH%.*}/"
+    export LOG_FOLDER_AND_LOG_FILE_PREFIX="${LOG_PATH%.*}"
 
     # now create "/eio-data/log/camera-runCommand.log"
     SCRIPT_LOG_LOCATION="${LOG_FOLDER_AND_LOG_FILE_PREFIX}-runCommand.log"

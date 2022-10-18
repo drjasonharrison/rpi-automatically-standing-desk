@@ -10,7 +10,7 @@ export COMMIT_HASH="unknown"
 
 function errorIdle() {
     while : ; do
-        echolog "$1"
+        echolog "Error: $1"
         sleep 600
     done
 }
@@ -172,7 +172,7 @@ function getCommitHash() {
             echo 'Error: jq is not installed.' >&2
             return
         else
-            debuglog -e "jq: $(jq --version)\n"
+            debuglog "jq: $(jq --version)\n"
         fi
         set +e
         COMMIT_HASH=$(echo "${curlResult}" | jq '.[].commit')

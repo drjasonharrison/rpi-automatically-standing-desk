@@ -20,5 +20,5 @@ python raiseDesk.py
 RESULT=$?
 
 if ((RESULT)); then
-    errorIdle "Error: raiseDesk.py exited with code ${RESULT}"
+    errorIdle "raiseDesk.py exited with code ${RESULT}"
 fi

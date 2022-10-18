@@ -1,24 +1,26 @@
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
-    print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.\n"
-    "  You can achieve this by using 'sudo' to run your script")
+    print(
+        "Error importing RPi.GPIO!  This is probably because you need superuser privileges.\n"
+        "  You can achieve this by using 'sudo' to run your script"
+    )
 
-from time import sleep
-import random
-import os
-import logging
 import itertools
+import logging
+import os
+import random
+from time import sleep
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(name)s %(levelname)s %(message)s'
+    level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s"
 )
 log = logging.getLogger("raiseDesk")
 
+
 class RaiseDesk:
     def __init__(self):
-        self.logger = logging.getLogger('RaiseDesk')
+        self.logger = logging.getLogger("RaiseDesk")
 
         self.Relay_Ch1 = 26
         self.Relay_Ch2 = 20
@@ -36,7 +38,9 @@ class RaiseDesk:
         GPIO.output(self.Relay_Ch3, GPIO.HIGH)
 
         # takes a long time for the desk to rise up
-        self.pressRaiseDeskButtonSeconds = int(os.getenv("DESK_PRESS_BUTTON_SECONDS", 10))
+        self.pressRaiseDeskButtonSeconds = int(
+            os.getenv("DESK_PRESS_BUTTON_SECONDS", 10)
+        )
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
         self.maxMinutesBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
         self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
@@ -68,7 +72,9 @@ class RaiseDesk:
             self.releaseButton()
             log.info("desk raised")
 
-            sleep_minutes = random.randint(self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk)
+            sleep_minutes = random.randint(
+                self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk
+            )
             log.info("sleeping for %d minutes", sleep_minutes)
             sleep(sleep_minutes * 60)
 
@@ -81,7 +87,6 @@ class RaiseDesk:
             print("off")
             self.releaseButton()
             sleep(2)
-
 
     def main(self):
         # self.toggleButtonTest()

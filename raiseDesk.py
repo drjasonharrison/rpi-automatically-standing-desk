@@ -11,6 +11,8 @@ import logging
 import os
 import random
 from time import sleep
+import datetime
+import pytz
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s"
@@ -44,6 +46,7 @@ class RaiseDesk:
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
         self.maxMinutesBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
         self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
+        self.timezone = pytz.timezone(os.getenv("DESK_TIME_ZONE", "US/Pacific"))
 
         log.info("initialized")
 
@@ -76,6 +79,11 @@ class RaiseDesk:
                 self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk
             )
             log.info("sleeping for %d minutes", sleep_minutes)
+
+            raise_datetime = datetime.datetime.now(self.timezone) + datetime.timedelta(minutes=sleep_minutes)
+            raise_datetime_str = raise_datetime.strftime('%Y-%m-%d %H-%M-%S')
+            now = date.now()
+            log.info("desk will raise at %s", raise_datetime_str)
             sleep(sleep_minutes * 60)
 
     def toggleButtonTest(self):

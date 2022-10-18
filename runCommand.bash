@@ -7,6 +7,10 @@ export SCRIPT_NAME=$(basename "${DIR}")
 export LOG_PATH=/data
 export LOG_TO_CONSOLE=true
 
+if [ -n ${DESK_TIME_ZONE+x} ]; then
+    export TZ="${DESK_TIME_ZONE}"
+fi
+
 # shellcheck disable=SC1090
 LOG_LEVEL="debug"
 source "$DIR/utils.bash"

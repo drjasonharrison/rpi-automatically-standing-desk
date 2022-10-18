@@ -82,7 +82,6 @@ class RaiseDesk:
 
             raise_datetime = datetime.datetime.now(self.timezone) + datetime.timedelta(minutes=sleep_minutes)
             raise_datetime_str = raise_datetime.strftime('%Y-%m-%d %H-%M-%S')
-            now = date.now()
             log.info("desk will raise at %s", raise_datetime_str)
             sleep(sleep_minutes * 60)
 

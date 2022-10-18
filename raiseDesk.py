@@ -49,6 +49,10 @@ class RaiseDesk:
         self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
         self.timezone = pytz.timezone(os.getenv("DESK_TIME_ZONE", "US/Pacific"))
 
+        random_bytes = os.urandom(16)
+        self.random = random.Random()
+        self.random.seed(random_bytes)
+
         log.info("initialized")
 
     def chatterRelay(self):
@@ -76,7 +80,7 @@ class RaiseDesk:
             self.releaseButton()
             log.info("desk raised")
 
-            sleep_minutes = random.randint(
+            sleep_minutes = self.random.randint(
                 self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk
             )
             log.info("sleeping for %d minutes", sleep_minutes)

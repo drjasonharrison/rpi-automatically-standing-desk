@@ -1,7 +1,8 @@
 try:
     import RPi.GPIO as GPIO
 except RuntimeError:
-    print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.  You can achieve this by using 'sudo' to run your script")
+    print("Error importing RPi.GPIO!  This is probably because you need superuser privileges.\n"
+    "  You can achieve this by using 'sudo' to run your script")
 
 from time import sleep
 import random
@@ -39,7 +40,7 @@ class RaiseDesk:
         self.minMinutesBeforeRaisingDesk = int(os.getenv("DESK_MIN_PERIOD_MINUTES", 45))
         self.maxMinutesBeforeRaisingDesk = int(os.getenv("DESK_MAX_PERIOD_MINUTES", 60))
         self.raiseWarningChatterCycles = int(os.getenv("DESK_RAISE_WARNING_CYCLES", 10))
-    
+
         log.info("initialized")
 
     def chatterRelay(self):
@@ -58,16 +59,16 @@ class RaiseDesk:
 
     def raiseDeskAndSleepForever(self):
         while True:
-            ## if during "work hours" on a "work day"
+            # TODO: if during "work hours" on a "work day"
             self.chatterRelay()
             log.info("desk raising")
-            
+
             self.pressButton()
             sleep(self.pressRaiseDeskButtonSeconds)
             self.releaseButton()
             log.info("desk raised")
 
-            sleep_minutes = random.randint(self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk) 
+            sleep_minutes = random.randint(self.minMinutesBeforeRaisingDesk, self.maxMinutesBeforeRaisingDesk)
             log.info("sleeping for %d minutes", sleep_minutes)
             sleep(sleep_minutes * 60)
 
@@ -91,5 +92,3 @@ class RaiseDesk:
 if __name__ == "__main__":
     raiseDesk = RaiseDesk()
     raiseDesk.main()
-
-        

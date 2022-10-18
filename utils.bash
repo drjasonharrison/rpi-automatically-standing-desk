@@ -17,12 +17,17 @@ function errorIdle() {
 
 initLogFormat() {
     # set up LOG_FORMAT
+    if [ -n ${LOG_FORMAT+x} ]; then
+        debuglog "initLogFormat: LOG_FORMAT is already defined"
+        return
+    fi
+
     OS_NAME=$(uname -s)
     if [ "$OS_NAME" == "Darwin" ]; then
-        LOG_FORMAT="[%Y-%m-%d %T]"
+        LOG_FORMAT="%Y-%m-%d %T"
         debuglog "Running on Darwin, LOG_FORMAT = $LOG_FORMAT"
     else
-        LOG_FORMAT="[%Y-%m-%d %T.%3N]"
+        LOG_FORMAT="%Y-%m-%d %T.%3N"
         debuglog "Running on $OS_NAME, LOG_FORMAT = $LOG_FORMAT"
     fi
 }
@@ -31,15 +36,16 @@ function initLogging() {
     initLogFormat
 
     if [ -z ${SERVICE_NAME+x} ]; then
-        echolog "Util::initLogging: SERVICE_NAME is not defined"
         if [ -z ${BALENA_SERVICE_NAME+x} ]; then
-            echolog "Util::initLogging: BALENA_SERVICE_NAME is not defined"
+            echolog "utils::initLogging: BALENA_SERVICE_NAME is not defined"
             export SERVICE_NAME=unknown
         else
             export SERVICE_NAME="${BALENA_SERVICE_NAME}"
+            echolog "utils::initLogging: defining SERVICE_NAME = ${BALENA_SERVICE_NAME}"
         fi
+        echolog "utils::initLogging: SERVICE_NAME is not defined"
     else
-        echolog "Util::initLogging: SERVICE_NAME = ${SERVICE_NAME}"
+        echolog "utils::initLogging: SERVICE_NAME = ${SERVICE_NAME}"
     fi
 
     if [ -z ${LOG_PATH+x} ]; then
@@ -78,7 +84,11 @@ function initLogging() {
     fi
 
     # get the "/data/log/camera" part of /eio-data/log/camera.log
-    export LOG_FOLDER_AND_LOG_FILE_PREFIX="${LOG_PATH%.*}"
+    # TODO: it's possible that the user defined LOG_PATH=/data without a filename.
+    # Might need to catch that and add SERVICE_NAME. Perhaps check when the check
+    # for an undefined LOG_PATH is performed, check for directory or something missing
+    # the ".log" suffix and then reset LOG_PATH
+    export LOG_FOLDER_AND_LOG_FILE_PREFIX="${LOG_PATH%.*}/"
 
     # now create "/eio-data/log/camera-runCommand.log"
     SCRIPT_LOG_LOCATION="${LOG_FOLDER_AND_LOG_FILE_PREFIX}-runCommand.log"
@@ -138,10 +148,10 @@ function initVariables() {
 
 function getCommitHash() {
     if [ -z ${BALENA_SUPERVISOR_ADDRESS+x} ]; then
-        echolog "Util::getCommitHash: BALENA_SUPERVISOR_ADDRESS is not defined"
+        echolog "utils::getCommitHash: BALENA_SUPERVISOR_ADDRESS is not defined"
         return
     elif [ -z ${BALENA_SUPERVISOR_API_KEY+x} ]; then
-        echolog "Util::getCommitHash: BALENA_SUPERVISOR_API_KEY is not defined"
+        echolog "utils::getCommitHash: BALENA_SUPERVISOR_API_KEY is not defined"
         return
     fi
 
@@ -162,7 +172,7 @@ function getCommitHash() {
             echo 'Error: jq is not installed.' >&2
             return
         else
-            echo -e "jq: \n$(jq --version)\n"
+            debuglog -e "jq: $(jq --version)\n"
         fi
         set +e
         COMMIT_HASH=$(echo "${curlResult}" | jq '.[].commit')
@@ -221,7 +231,7 @@ function debuglog() {
     fi
 
     if [ -z ${LOG_FORMAT+x} ]; then
-        echo "WARNING: LOG_FORMAT is not defined"
+        echo "utils::debuglog: WARNING: LOG_FORMAT is not defined"
         initLogFormat
     fi
 

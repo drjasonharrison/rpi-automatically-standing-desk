@@ -13,9 +13,9 @@ fi
 
 # shellcheck disable=SC1090
 LOG_LEVEL="debug"
+set +o errexit
 source "$DIR/utils.bash"
 
-set +o errexit
 python raiseDesk.py
 RESULT=$?
 

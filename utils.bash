@@ -17,18 +17,18 @@ function errorIdle() {
 
 initLogFormat() {
     # set up LOG_FORMAT
-    if [ -n ${LOG_FORMAT+x} ]; then
-        debuglog "initLogFormat: LOG_FORMAT is already defined"
+    if [ ! -z ${LOG_FORMAT+x} ]; then
+        echo "initLogFormat: LOG_FORMAT is already defined: ${LOG_FORMAT}"
         return
     fi
 
     OS_NAME=$(uname -s)
     if [ "$OS_NAME" == "Darwin" ]; then
         LOG_FORMAT="%Y-%m-%d %T"
-        debuglog "Running on Darwin, LOG_FORMAT = $LOG_FORMAT"
+        debuglog "Running on Darwin, LOG_FORMAT = ${LOG_FORMAT}"
     else
         LOG_FORMAT="%Y-%m-%d %T.%3N"
-        debuglog "Running on $OS_NAME, LOG_FORMAT = $LOG_FORMAT"
+        debuglog "Running on $OS_NAME, LOG_FORMAT = ${LOG_FORMAT}"
     fi
 }
 

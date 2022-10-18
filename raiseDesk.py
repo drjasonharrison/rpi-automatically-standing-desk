@@ -6,12 +6,13 @@ except RuntimeError:
         "  You can achieve this by using 'sudo' to run your script"
     )
 
+import datetime
 import itertools
 import logging
 import os
 import random
 from time import sleep
-import datetime
+
 import pytz
 
 logging.basicConfig(
@@ -80,8 +81,10 @@ class RaiseDesk:
             )
             log.info("sleeping for %d minutes", sleep_minutes)
 
-            raise_datetime = datetime.datetime.now(self.timezone) + datetime.timedelta(minutes=sleep_minutes)
-            raise_datetime_str = raise_datetime.strftime('%Y-%m-%d %H-%M-%S')
+            raise_datetime = datetime.datetime.now(self.timezone) + datetime.timedelta(
+                minutes=sleep_minutes
+            )
+            raise_datetime_str = raise_datetime.strftime("%Y-%m-%d %H-%M-%S")
             log.info("desk will raise at %s", raise_datetime_str)
             sleep(sleep_minutes * 60)
 
